@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>User Management</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-4">
+    <h1>Users</h1>
+
+    <button id="openAddUser" class="btn btn-primary mb-3">
+      Add User +
+    </button>
+
+    {% if message %}
+      <div class="alert alert-info">{{ message }}</div>
+    {% endif %}
+
+    <ul class="list-group mb-3">
+      {% for user in users %}
+        <li class="list-group-item">{{ user.name }}</li>
+      {% endfor %}
+    </ul>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1"
+         aria-labelledby="addUserModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addUserModalLabel">
+              Add New User
+            </h5>
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Loading…
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap and Fetch-Logic -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <script>
+    document
+      .getElementById('openAddUser')
+      .addEventListener('click', () => {
+        fetch('/users/add?modal=1')
+          .then(r => r.text())
+          .then(html => {
+            document.querySelector(
+              '#addUserModal .modal-body'
+            ).innerHTML = html;
+
+            const modal = new bootstrap.Modal(
+              document.getElementById('addUserModal')
+            );
+            modal.show();
+          })
+          .catch(err => console.error(err));
+      });
+  </script>
+</body>
+</html>

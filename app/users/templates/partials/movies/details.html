@@ -1,0 +1,32 @@
+{# zeigt Poster, Infos + „Hinzufügen“-Form #}
+<div class="card mb-3">
+  <div class="row g-0">
+    <div class="col-md-4">
+      {% if movie.Poster and movie.Poster!='N/A' %}
+      <img src="{{ movie.Poster }}"
+           class="img-fluid rounded-start"
+           alt="Poster {{ movie.Title }}">
+      {% else %}
+      <div class="d-flex align-items-center justify-content-center bg-secondary text-white" style="height:100%;">
+        No Image
+      </div>
+      {% endif %}
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ movie.Title }} ({{ movie.Year }})</h5>
+        <p class="card-text"><strong>Director:</strong> {{ movie.Director }}</p>
+        <p class="card-text"><strong>Genre:</strong> {{ movie.Genre }}</p>
+        <p class="card-text"><strong>Plot:</strong> {{ movie.Plot }}</p>
+
+        <form method="post"
+              action="{{ url_for('users.user_movies', user_id=user_id) }}">
+          <input type="hidden" name="title" value="{{ movie.Title }}">
+          <button type="submit" class="btn btn-success">
+            Add
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

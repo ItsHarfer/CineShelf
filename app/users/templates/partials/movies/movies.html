@@ -1,0 +1,47 @@
+
+{% if movies %}
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    {% for movie in movies %}
+      <div class="col">
+        <div class="card h-100">
+          {% if movie.poster_url %}
+            <img
+              src="{{ movie.poster_url }}"
+              class="card-img-top"
+              alt="{{ movie.name }} poster"
+              style="object-fit: cover; height: 200px;"
+            >
+          {% else %}
+            <div
+              class="d-flex align-items-center justify-content-center bg-secondary text-white"
+              style="height: 200px;"
+            >
+              No Image
+            </div>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">
+              {{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %}
+            </h5>
+            <p class="card-text mb-1"><strong>Director:</strong> {{ movie.director }}</p>
+            {% if movie.poster_url %}
+              <a href="{{ movie.poster_url }}" target="_blank" class="stretched-link"></a>
+            {% endif %}
+          </div>
+        </div>
+      </div><a href="#"
+   class="btn btn-outline-primary btn-sm flex-fill js-open-modal"
+   data-url="{{ url_for('users.user_movies',
+                        user_id=selected_user.id,
+                        modal=1,
+                        action='edit',
+                        movie_id=movie.id) }}">
+  Edit
+</a>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="alert alert-info mb-0">
+    No favorite movies found.
+  </div>
+{% endif %}

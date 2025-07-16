@@ -1,0 +1,73 @@
+<!-- anywhere you list users, trigger the modal like this -->
+<a
+  href="{{ url_for('users.user_movies', user_id=user.id, modal=1) }}"
+  class="user-movies-link"
+>
+  {{ user.name }}
+</a>
+
+<!-- the Bootstrap modal container (once per page) -->
+<div
+  class="modal fade"
+  id="moviesModal"
+  tabindex="-1"
+  aria-labelledby="moviesModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="moviesModalLabel">
+          Favorite Movies
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body" id="moviesContainer">
+        <p>Loading…</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.user-movies-link').forEach(link => {
+  link.addEventListener('click', async e => {
+    e.preventDefault();
+    const url = link.href;
+    const container = document.getElementById('moviesContainer');
+    container.innerHTML = '<p>Loading…</p>';
+    try {
+      const res = await fetch(url, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      });
+      if (!res.ok) throw new Error();
+      container.innerHTML = await res.text();
+    } catch {
+      container.innerHTML = `
+        <div class="alert alert-danger">
+          Couldn’t load movies.
+          <a href="${url.replace('?modal=1','')}">
+            View full page
+          </a>
+        </div>`;
+    }
+    new bootstrap.Modal(
+      document.getElementById('moviesModal')
+    ).show();
+  });
+});
+</script>

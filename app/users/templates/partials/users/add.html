@@ -1,0 +1,22 @@
+
+<div class="modal-body">
+  <form id="addUserForm" action="{{ url_for('users.add_user') }}" method="post">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text"
+             class="form-control"
+             id="username"
+             name="username"
+             placeholder="Enter username"
+             required>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+    Close
+  </button>
+  <button type="submit" class="btn btn-primary" form="addUserForm">
+    Add User
+  </button>
+</div>
