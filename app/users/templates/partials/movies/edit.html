@@ -1,0 +1,41 @@
+
+<div class="modal-header">
+  <h5 class="modal-title">Edit Movie</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+  <form id="editMovieForm"
+        method="post"
+        action="{{ url_for('users.update_movie', user_id=movie.user_id, movie_id=movie.id) }}">
+    <div class="mb-3">
+      <label for="name-{{ movie.id }}" class="form-label">Title</label>
+      <input type="text"
+             class="form-control"
+             id="name-{{ movie.id }}"
+             name="name"
+             value="{{ movie.name }}"
+             required>
+    </div>
+    <div class="mb-3">
+      <label for="director-{{ movie.id }}" class="form-label">Director</label>
+      <input type="text"
+             class="form-control"
+             id="director-{{ movie.id }}"
+             name="director"
+             value="{{ movie.director }}"
+             required>
+    </div>
+    <div class="mb-3">
+      <label for="year-{{ movie.id }}" class="form-label">Year</label>
+      <input type="number"
+             class="form-control"
+             id="year-{{ movie.id }}"
+             name="year"
+             value="{{ movie.year }}"
+             required>
+    </div>
+    <button type="submit" class="btn btn-primary">
+      Save Changes
+    </button>
+  </form>
+</div>

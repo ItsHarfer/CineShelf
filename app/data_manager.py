@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy.exc import SQLAlchemyError
 from flask_sqlalchemy import SQLAlchemy
 
-from models import User, Movie, db
+from app.models import User, Movie
 
 
 class DataManager:
@@ -30,9 +30,21 @@ class DataManager:
             self.db.session.add(user)
             self.db.session.commit()
             return user
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
+            logging.exception(f"Database commit failed: {e}")
             self.db.session.rollback()
             raise
+
+    def delete_user(self, user_id: int):
+        """
+        Delete a User instance from the database.
+        """
+        try:
+            user = User.query.get(user_id)
+            self.db.session.delete(user)
+            self.db.session.commit()
+        except SQLAlchemyError:
+            logging.error("Failed to delete user with ID %d", user_id)
 
     def get_users(self) -> List[User]:
         """
@@ -40,7 +52,7 @@ class DataManager:
 
         :return: List of User objects.
         """
-        return User.query.all()
+        return self.db.session.query(User).order_by(User.name).all()
 
     def get_movies(self, user_id: int) -> List[Movie]:
         """
@@ -67,19 +79,19 @@ class DataManager:
             self.db.session.rollback()
             raise
 
-    def update_movie(self, movie_id, new_title):
+    def update_movie(self, movie):
         """
-        Update the title of a Movie instance in the database.
-
-        :param movie_id: The ID of the Movie to update.
-        :param new_title: The new title to set for the Movie.
+        Merge the given Movie instance into the session and commit.
         """
         try:
-            movie = Movie.query.get(movie_id)
-            movie.title = new_title
+            # merge() will INSERT if new or UPDATE if existing
+            self.db.session.merge(movie)
             self.db.session.commit()
-        except SQLAlchemyError:
-            logging.error("Failed to update movie with ID %d", movie_id)
+            return movie
+        except SQLAlchemyError as e:
+            logging.exception("Failed to update movie: %s", e)
+            self.db.session.rollback()
+            raise
 
     def delete_movie(self, movie_id):
         """

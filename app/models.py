@@ -13,11 +13,8 @@ Author: Martin Haferanke
 Date: 2025-07-11
 """
 
-from flask_sqlalchemy import SQLAlchemy
+from app import db
 from sqlalchemy.orm import backref
-
-# Initialize the SQLAlchemy extension
-db = SQLAlchemy()
 
 
 class User(db.Model):
