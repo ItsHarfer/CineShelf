@@ -3,7 +3,7 @@
 import logging
 from flask import Blueprint, render_template, request
 
-from app import db
+from app.models import db
 from app.data_manager import DataManager
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -20,21 +20,17 @@ def page_not_found(e):
 @home_bp.route("/")
 def home():
     try:
+
+        user_id = request.args.get("user_id", type=int)
         message = request.args.get("message")
 
-        # users ist jetzt eine Liste, weil get_users() .all() aufruft
         users = DataManager(db).get_users()
 
-        # 1) gewählte user_id aus Query-String
-        user_id = request.args.get("user_id", type=int)
-        # 2) falls noch keine da ist, nimm den ersten User
         if not user_id and users:
             user_id = users[0].id
 
-        # ausgewählten User finden
         selected_user = next((u for u in users if u.id == user_id), None)
 
-        # movies-Query ausführen, da lazy="dynamic"
         movies = selected_user.movies.all() if selected_user else []
 
         return render_template(

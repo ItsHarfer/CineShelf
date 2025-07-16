@@ -1,0 +1,22 @@
+{# templates/users/add.html #}
+<div class="modal-header">
+  <h5 class="modal-title">Add New User</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+  <form id="addUserForm" method="post" action="{{ url_for('users.add_user') }}">
+    <div class="mb-3">
+      <label for="usernameInput" class="form-label">Username</label>
+      <input
+        id="usernameInput"
+        name="username"
+        type="text"
+        class="form-control"
+        placeholder="Enter username"
+        required
+      >
+    </div>
+    <button type="submit" class="btn btn-primary">Create User</button>
+  </form>
+</div>
