@@ -12,8 +12,7 @@ Features:
 Author: Martin Haferanke
 Date: 2025-07-11
 """
-
-from app import db
+from .extentions import db
 from sqlalchemy.orm import backref
 
 

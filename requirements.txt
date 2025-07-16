@@ -2,3 +2,4 @@ SQLAlchemy
 Flask
 requests
 python-dotenv
+Flask-Limiter
