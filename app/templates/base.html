@@ -1,59 +1,57 @@
-<!-- templates/base.html -->
 <!doctype html>
 <html lang="de">
 <head>
     <meta charset="utf-8">
     <title>{% block title %}CineShelf{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-            rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <nav class="bg-primary text-white py-3">
     <div class="container d-flex align-items-center">
         <h2 class="mb-0 me-auto">CineShelf</h2>
 
-        <!-- User Selector -->
-        <select class="form-select form-select-sm w-auto me-3"
+        <!-- Current User Label & Selector -->
+        <span class="fw-semibold me-2">Current User:</span>
+        <select class="form-select form-select-sm w-auto me-4"
                 onchange="loadIndex({ user_id: this.value })">
             {% for u in users %}
-            <option value="{{ u.id }}"
-                    {% if u.id== selected_user_id %}selected{% endif %}>
+            <option value="{{ u.id }}" {% if u.id == selected_user_id %}selected{% endif %}>
                 {{ u.name }}
             </option>
             {% endfor %}
         </select>
 
-        <!-- Movie Count -->
-        <span class="me-3">Movies: {{ movies|length }}</span>
-
         <!-- Buttons -->
         <div class="d-flex gap-2">
-            <button class="btn btn-light btn-sm" onclick="openModal('/users/add?modal=1')">
+            <button class="btn btn-success btn-sm" onclick="openModal('/users/add?modal=1')">
                 Add User
             </button>
-            <button class="btn btn-light btn-sm"
-                    onclick="postForm(
-           '/users/{{ selected_user_id }}/delete',
-            'Are you sure to delete this user?'
-          )">
-            Delete User
+            <button class="btn btn-danger btn-sm {% if not users or selected_user_id is none %}disabled{% endif %}"
+                    {% if users and selected_user_id is not none %}
+                    onclick="postForm('/users/{{ selected_user_id }}/delete', 'Are you sure you want to delete this user?')"
+                    {% endif %}>
+                Delete User
             </button>
-            <button class="btn btn-light btn-sm"
-                    onclick="openModal('/users/{{ selected_user_id }}/movies?modal=1&action=add')">
-                Add Movie
-            </button>
+
         </div>
     </div>
 </nav>
 
-
 <main>
-    {% block content %}
-    <!-- Default-Content, falls kein Kind-Template etwas reinpackt -->
-    {% endblock %}
+    {% block content %}{% endblock %}
 </main>
+
+{# Floating Action Button: Add Movie #}
+{% if users and selected_user_id %}
+  <button id="fab-add-movie"
+          class="btn btn-success btn-lg rounded-circle"
+          style="position: fixed; bottom: 1.5rem; right: 1.5rem; width:3.5rem; height: 3.5rem; z-index: 1050;"
+          title="Add Movie"
+          onclick="openModal('/users/{{ selected_user_id }}/movies?modal=1&action=add')">
+    +
+  </button>
+{% endif %}
 
 <footer class="bg-light text-center text-lg-start mt-auto">
     <div class="container p-4">
@@ -63,9 +61,7 @@
             </div>
         </div>
     </div>
-    <!-- Main JS loaded from static folder -->
     <script src="{{ url_for('static', filename='main.js') }}"></script>
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </footer>
 </body>
