@@ -1,32 +1,104 @@
-
-<div class="card mb-3">
-  <div class="row g-0">
-    <div class="col-md-4">
-      {% if movie.Poster and movie.Poster!='N/A' %}
-      <img src="{{ movie.Poster }}"
-           class="img-fluid rounded-start"
-           alt="Poster {{ movie.Title }}">
-      {% else %}
-      <div class="d-flex align-items-center justify-content-center bg-secondary text-white" style="height:100%;">
-        No Image
-      </div>
-      {% endif %}
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title">{{ movie.Title }} ({{ movie.Year }})</h5>
-        <p class="card-text"><strong>Director:</strong> {{ movie.Director }}</p>
-        <p class="card-text"><strong>Genre:</strong> {{ movie.Genre }}</p>
-        <p class="card-text"><strong>Plot:</strong> {{ movie.Plot }}</p>
-
-        <form method="post"
-              action="{{ url_for('users.user_movies', user_id=user_id) }}">
-          <input type="hidden" name="title" value="{{ movie.Title }}">
-          <button type="submit" class="btn btn-success">
-            Add
-          </button>
-        </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <title>Movie Search Results</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-XLVAkyyrnU2n1Xmc9v2+8tUVuDF7Z49+XbCJQ6sznGIdR/Qo3Nd905J3rT4q0zHx"
+    crossorigin="anonymous"
+  />
+  <style>
+    .no-image-placeholder {
+      height: 100%;
+      min-height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container for search/add movie modal content -->
+  <div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              {% if movie.Poster and movie.Poster != 'N/A' %}
+              <img
+                src="{{ movie.Poster }}"
+                class="img-fluid rounded-start"
+                alt="Poster {{ movie.Title }}"
+              />
+              {% else %}
+              <div
+                class="d-flex align-items-center justify-content-center bg-secondary text-white no-image-placeholder"
+              >
+                No Image
+              </div>
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">
+                  {{ movie.Title }} ({{ movie.Year }})
+                </h5>
+                <p class="card-text">
+                  <strong>Director:</strong> {{ movie.Director }}
+                </p>
+                <p class="card-text">
+                  <strong>Genre:</strong> {{ movie.Genre }}
+                </p>
+                <p class="card-text">
+                  <strong>Plot:</strong> {{ movie.Plot }}
+                </p>
+                <form
+                  id="addMovieForm"
+                  data-user-id="{{ user.id }}"
+                  method="post"
+                  action="{{ url_for('users.user_movies', user_id=user.id) }}"
+                >
+                  <input
+                    type="hidden"
+                    name="title"
+                    value="{{ movie.Title }}"
+                  />
+                  <button type="submit" class="btn btn-success" id="addToFavBtn">
+                    Add to Favorites
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Back to Search
+        </button>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Bootstrap JS Bundle (Popper + Bootstrap) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoPrjUQGMEHgs5vT4r1GzBzNUEBo/ozE4v1pHG2QHm7b7ha"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Your utilities (postForm, openModal, bindMovieModal) -->
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      bindMovieModal(); // Ensure add button is bound
+    });
+  </script>
+</body>
+</html>

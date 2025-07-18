@@ -1,5 +1,6 @@
-SQLAlchemy
 Flask
+Flask-SQLAlchemy
+Flask-Limiter
 requests
 python-dotenv
-Flask-Limiter
+Jinja2
