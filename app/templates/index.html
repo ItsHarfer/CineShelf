@@ -1,80 +1,76 @@
 {% extends "base.html" %}
 {% block content %}
-  <main class="container py-4">
+<main class="container py-4">
     {% if message %}
-      <div class="alert alert-info">{{ message }}</div>
+    <div class="alert alert-info">{{ message }}</div>
     {% endif %}
 
     {% if not users or selected_user is none %}
-      <!-- No User in Database -->
-      <div class="text-center py-5">
+    <!-- No User in Database -->
+    <div class="text-center py-5">
         <p class="lead">No users found in the database. Please create a user first.</p>
         <button class="btn btn-success" onclick="openModal('/users/add?modal=1')">
-          Add User
+            Add User
         </button>
-      </div>
+    </div>
     {% else %}
-<!-- Movie Count und Floating Add Button nebeneinander -->
-<div class="d-flex align-items-center mb-4">
-  <!-- Movie Count -->
-  <span>Favourite Movies: <strong>{{ movies|length }}</strong></span>
-  <!-- Button gleich rechts daneben mit etwas Abstand -->
-  <button
-    id="fab-add-movie"
-    class="btn btn-success btn-lg rounded-circle ms-3 d-flex justify-content-center align-items-center w-1ß h-10"
+    <!-- Movie Count und Floating Add Button -->
+    <div class="d-flex align-items-center mb-4">
+        <span>Favourite Movies: <strong>{{ movies|length }}</strong></span>
 
-    title="Add Movie"
-    onclick="openModal('/users/{{ selected_user_id }}/movies?modal=1&action=add')"
-  >
-    +
-  </button>
-</div>
+        <button id="fab-add-movie"
+                class="btn btn-primary btn-sm rounded-circle ms-2 "
 
-      {% if movies %}
-        <!-- Movie Grid -->
-        <div class="row gx-3 gy-4">
-          {% for movie in movies %}
-            <div class="col-sm-6 col-md-4 col-lg-3">
-              <div class="card h-100">
+                title="Add Movie"
+                onclick="openModal('/users/{{ selected_user_id }}/movies?modal=1&action=add')"
+        >
+            +
+        </button>
+    </div>
+    {% if movies %}
+    <!-- Movie Grid -->
+    <div class="row gx-3 gy-4">
+        {% for movie in movies %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100">
                 <img src="{{ movie.poster_url }}"
-                     class="card-img-top img-fluid object-fit-cover"
-                     style="height: 500px;"
+                     class="card-img-top img-fluid object-fit-cover h-75"
                      alt="{{ movie.name }} Poster">
                 <div class="card-body d-flex flex-column">
-                  <h5 class="card-title">{{ movie.name }}</h5>
-                  <p class="card-text"><small>Director: {{ movie.director }}</small></p>
-                  <div class="mt-auto d-flex gap-2">
-                    <button class="btn btn-outline-primary btn-sm js-open-modal"
-                            data-url="{{ url_for('users.edit_movie', user_id=selected_user_id, movie_id=movie.id) }}">
-                      Edit
-                    </button>
-                    <button class="btn btn-outline-danger btn-sm js-delete-movie"
-                            data-url="{{ url_for('users.delete_movie', user_id=selected_user_id, movie_id=movie.id) }}">
-                      Delete
-                    </button>
-                  </div>
+                    <h5 class="card-title">{{ movie.name }} ({{ movie.year }})</h5>
+                    <p class="card-text"><small>Director: {{ movie.director or 'Unknown'}}</small></p>
+                    <div class="mt-auto d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm js-open-modal"
+                                data-url="{{ url_for('users.edit_movie', user_id=selected_user_id, movie_id=movie.id) }}">
+                            Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm js-delete-movie"
+                                data-url="{{ url_for('users.delete_movie', user_id=selected_user_id, movie_id=movie.id) }}">
+                            Delete
+                        </button>
+                    </div>
                 </div>
-              </div>
             </div>
-          {% endfor %}
         </div>
-      {% else %}
-        <!-- No Movies for Selected User -->
-        <div class="text-center py-5">
-          <p class="lead">No movies found for this user. Would you like to add one?</p>
-          <button class="btn btn-success"
-                  onclick="openModal('/users/{{ selected_user_id }}/movies?modal=1&action=add')">
-            + Add Movie
-          </button>
-        </div>
-      {% endif %}
-    {% endif %}
-  </main>
-
-  <!-- Modal Container -->
-  <div class="modal fade" id="globalModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content"><!-- Content loaded via JS --></div>
+        {% endfor %}
     </div>
-  </div>
+    {% else %}
+    <!-- No Movies for Selected User -->
+    <div class="text-center py-5">
+        <p class="lead">No movies found for this user. Would you like to add one?</p>
+        <button class="btn btn-success"
+                onclick="openModal('/users/{{ selected_user_id }}/movies?modal=1&action=add')">
+            + Add Movie
+        </button>
+    </div>
+    {% endif %}
+{% endif %}
+</main>
+
+<!-- Modal Container -->
+<div class="modal fade" id="globalModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"><!-- Content loaded via JS --></div>
+    </div>
+</div>
 {% endblock %}

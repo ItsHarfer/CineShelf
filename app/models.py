@@ -10,7 +10,7 @@ Features:
 - Movie model: stores a unique id, title, director, release year, poster URL, and a foreign key to User.
 
 Author: Martin Haferanke
-Date: 2025-07-11
+Date: 2025-07-14
 """
 from .extentions import db
 from sqlalchemy.orm import backref
@@ -27,11 +27,8 @@ class User(db.Model):
     manage user-specific data within the application context.
 
     :ivar id: Unique identifier for the user.
-    :type id: int
     :ivar name: Name of the user.
-    :type name: str
     :ivar movies: Collection of movies associated with the user.
-    :type movies: sqlalchemy.orm.dynamic.AppenderQuery
     """
 
     __tablename__ = "users"
@@ -65,17 +62,11 @@ class Movie(db.Model):
     representations for debugging and display purposes.
 
     :ivar id: The unique identifier for the movie.
-    :type id: int
     :ivar name: The name/title of the movie.
-    :type name: str
     :ivar director: The director of the movie.
-    :type director: str
     :ivar year: The release year of the movie.
-    :type year: int
     :ivar poster_url: The URL of the movie poster (if provided).
-    :type poster_url: str or None
     :ivar user_id: The id of the user associated with this movie.
-    :type user_id: int
     """
 
     __tablename__ = "movies"

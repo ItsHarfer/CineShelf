@@ -1,65 +1,89 @@
 {# templates/movies/add.html #}
 <div class="modal-header">
-  <h5 class="modal-title">Add Favourite Movie</h5>
-  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <h5 class="modal-title">Add Favourite Movie</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 <div class="modal-body">
-  <form id="addMovieForm" data-user-id="{{ user.id }}">
-    <div class="input-group mb-3">
-      <input
-        name="title"
-        type="text"
-        class="form-control"
-        placeholder="Enter movie title"
-        required
-      />
-      <button class="btn btn-primary" type="submit">Search</button>
-    </div>
-  </form>
+    <form id="addMovieForm" data-user-id="{{ user.id }}">
+        <div class="input-group mb-3">
+            <input
+                    name="title"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter movie title"
+                    required
+            />
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
 
-  <div id="movieSearchResults">
-    {% if data %}
-  <!-- RESULT CARD ENCASED IN A POST-FORM -->
-  <form
-    id="confirmAddForm"
-    method="post"
-    action="{{ url_for('users.user_movies', user_id=user.id) }}"
-  >
-    <!-- carry through everything from `data` -->
-    <input type="hidden" name="title"    value="{{ data.Title }}">
-    <input type="hidden" name="year"     value="{{ data.Year }}">
-    <input type="hidden" name="poster"   value="{{ data.Poster }}">
-    <input type="hidden" name="director" value="{{ data.Director }}">
-    <input type="hidden" name="plot"     value="{{ data.Plot }}">
+    <div id="movieSearchResults">
 
-    <div class="card mb-3">
-      <div class="row g-0">
-        <div class="col-md-4">
-          {% if data.Poster %}
-          <img src="{{ data.Poster }}"
-               class="img-fluid rounded-start"
-               alt="Poster for {{ data.Title }}"
-               style="object-fit: cover; height: 100%;">
-          {% else %}
-          <div class="d-flex align-items-center justify-content-center bg-secondary text-white"
-               style="height:100%; min-height:200px">
-            No Image
+
+        {% if data %}
+        {% if already_added %}
+        <div class="alert alert-warning text-center">
+            “{{ data.Title }}” is already in your favourites.
+        </div>
+        {% endif %}
+
+        <!-- RESULT CARD ENCASED IN A POST-FORM -->
+        <form
+                id="confirmAddForm"
+                method="post"
+                action="{{ url_for('users.user_movies', user_id=user.id) }}"
+        >
+            <input type="hidden" name="title" value="{{ data.Title }}">
+            <input type="hidden" name="year" value="{{ data.Year }}">
+            <input type="hidden" name="poster" value="{{ data.Poster }}">
+            <input type="hidden" name="director" value="{{ data.Director }}">
+            <input type="hidden" name="plot" value="{{ data.Plot }}">
+
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        {% if data.Poster %}
+                        <img src="{{ data.Poster }}"
+                             class="img-fluid rounded-start"
+                             alt="Poster for {{ data.Title }}"
+                             style="object-fit: cover; height: 100%;">
+                        {% else %}
+                        <div class="d-flex align-items-center justify-content-center bg-secondary text-white"
+                             style="height:100%; min-height:200px">
+                            No Image
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                {{ data.Title }}{% if data.Year %} ({{ data.Year }}){% endif %}
+                            </h5>
+                            <p class="card-text mb-1">
+                                <strong>Director:</strong> {{ data.Director or "Unknown" }}
+                            </p>
+                            <p class="card-text mb-3">
+                                <strong>Plot:</strong> {{ data.Plot or "N/A" }}
+                            </p>
+                            <button
+                                    type="submit"
+                                    class="btn btn-success mt-auto"
+                                    {% if already_added %}disabled{% endif %}
+                            >
+                                Add to Favourites
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {% else %}
+          {% if search_performed %}
+          <!-- No Results Found -->
+          <div class="text-center py-4">
+              <p class="lead">No movies found. Please try a different title.</p>
           </div>
           {% endif %}
-        </div>
-        <div class="col-md-8">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">{{ data.Title }}{% if data.Year %} ({{ data.Year }}){% endif %}</h5>
-            <p class="card-text mb-1"><strong>Director:</strong> {{ data.Director or "Unknown" }}</p>
-            <p class="card-text mb-3"><strong>Plot:</strong> {{ data.Plot or "N/A" }}</p>
-            <button type="submit" class="btn btn-success mt-auto">
-              Add to Favourites
-            </button>
-          </div>
-        </div>
-      </div>
+        {% endif %}
     </div>
-  </form>
-  {% endif %}
-  </div>
 </div>

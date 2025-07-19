@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <title>Edit Movie</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-XLVAkyyrnU2n1Xmc9v2+8tUVuDF7Z49+XbCJQ6sznGIdR/Qo3Nd905J3rT4q0zHx"
+    crossorigin="anonymous"
+  />
+</head>
+<body>
+  <!-- Edit Movie Modal -->
+  <div
+    class="modal fade"
+    id="editMovieModal"
+    tabindex="-1"
+    aria-labelledby="editMovieModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editMovieModalLabel">Edit Movie</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form
+            id="editMovieForm"
+            method="post"
+            action="{{ url_for('users.update_movie', user_id=movie.user_id, movie_id=movie.id) }}"
+          >
+            <div class="mb-3">
+              <label for="name-{{ movie.id }}" class="form-label">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name-{{ movie.id }}"
+                name="name"
+                value="{{ movie.name }}"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="director-{{ movie.id }}" class="form-label">Director</label>
+              <input
+                type="text"
+                class="form-control"
+                id="director-{{ movie.id }}"
+                name="director"
+                value="{{ movie.director }}"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="year-{{ movie.id }}" class="form-label">Year</label>
+              <input
+                type="number"
+                class="form-control"
+                id="year-{{ movie.id }}"
+                name="year"
+                value="{{ movie.year }}"
+                min="1888"
+                max="{{ current_year }}"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Save Changes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle (Popper + Bootstrap) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoPrjUQGMEHgs5vT4r1GzBzNUEBo/ozE4v1pHG2QHm7b7ha"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Utilities (openModal, closeModal, etc.) -->
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Show this modal when the partial is loaded
+      const modalEl = document.getElementById('editMovieModal');
+      const bsModal = new bootstrap.Modal(modalEl);
+      bsModal.show();
+
+      // Close modal cleanup
+      modalEl.addEventListener('hidden.bs.modal', () => {
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        document.body.classList.remove('modal-open');
+      });
+    });
+  </script>
+</body>
+</html>
