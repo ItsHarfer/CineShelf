@@ -99,17 +99,14 @@ cd CineShelf
 ```
 
 ### 2. Set Up Environment Variables
-Obtaining an OMDb API Key
+Obtaining an OMDb API Key 
+Visit OMDb API Key Page. Link: https://www.omdbapi.com/apikey.aspx
 
-Visit OMDb API Key Page.
-
-Select the Free Trial option and register with your email.
-
+Select the Free Trial option and register with your email. 
 You will receive your API key via email.
 
 Copy the key and replace your-omdb-api-key in your .env file:
-
-
+ 
 Create a `.env` file in project root:
 
 ```env
