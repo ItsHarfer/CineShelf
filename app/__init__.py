@@ -35,6 +35,7 @@ Date: 2025-07-18
 """
 import os
 import logging
+import sys
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask, render_template
@@ -65,14 +66,20 @@ def create_app(
     :rtype: Flask
     :raises OSError: if log directory cannot be created
     """
+    # add prodject root for production
+    project_home = "/home/H4rf3r/CineShelf"
+    if project_home not in sys.path:
+        sys.path.insert(0, project_home)
+
     # Load environment variables
-    load_dotenv()
+    load_dotenv(os.path.join(project_home, ".env"))
 
     # Initialize Flask
     app = Flask(
         __name__,
         template_folder=template_folder or "app/templates",
         static_folder=static_folder or "app/static",
+        instance_relative_config=True,
     )
 
     # Apply configuration

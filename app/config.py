@@ -46,9 +46,11 @@ class BaseConfig:
     SQLALCHEMY_ECHO: bool = False
 
     # Construct default SQLite database URI if none provided
-    _base_dir: str = os.path.abspath(os.path.dirname(__file__))
-    SQLALCHEMY_DATABASE_URI: str = os.getenv(
-        "DATABASE_URL", f"sqlite:///{os.path.join(_base_dir, 'data/movies.sqlite')}"
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    instance_dir = os.path.join(basedir, os.pardir, "instance")
+    os.makedirs(instance_dir, exist_ok=True)
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "DATABASE_URL", f"sqlite:///{os.path.join(instance_dir, 'movies.sqlite')}"
     )
 
     # Flask settings
@@ -73,6 +75,7 @@ class TestingConfig(BaseConfig):
     Testing configuration: uses in-memory database and disables external API usage.
 
     Overrides:
+        TESTING: Enable Flask testing mode.
         TESTING: Enable Flask testing mode.
         SQLALCHEMY_DATABASE_URI: Use SQLite in-memory database.
         OPENAI_API_KEY: None to prevent real API calls.

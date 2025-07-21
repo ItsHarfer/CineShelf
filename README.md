@@ -109,13 +109,8 @@ Copy the key and replace your-omdb-api-key in your .env file:
  
 Create a `.env` file in project root:
 
-```env
-FLASK_CONFIG=development
-SECRET_KEY=your-secret-key
-DATABASE_URL=sqlite:///data/movies.sqlite
-OMDB_API_KEY=your-omdb-api-key
-FLASK_RUN_HOST=127.0.0.1   # optional
-FLASK_RUN_PORT=5000        # optional
+```env 
+OMDB_API_KEY=your-omdb-api-key 
 ```
 
 ### 3. Install Dependencies
@@ -129,7 +124,7 @@ pip install -r requirements.txt
 ### 4. Seed the Database (Optional)
 
 ```bash
-python data/data_seed.py
+python app/data/data_seed.py
 ```
 
 ### 5. Run the App
