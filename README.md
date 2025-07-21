@@ -1,7 +1,6 @@
 <img src="app/static/assets/logo.png" alt="CineShelf Logo" width="200">
  
 A Flask-based web application for managing personal movie collections. CineShelf lets you search OMDb for rich movie metadata, curate your favorites, track watch details, and enjoy a responsive Bootstrap-powered interface.
-
 ---
 
 ## ✨ Features
@@ -36,10 +35,9 @@ A Flask-based web application for managing personal movie collections. CineShelf
 ---
 
 ## 📸 Preview
-
 <img src="app/static/assets/Screenshot_Home.png" alt="Home Page Screenshot" width="800">
 <img src="app/static/assets/Screenshot_AddMovie.png" alt="Add Movie Modal Screenshot" width="800">
-
+Website Preview: https://h4rf3r.pythonanywhere.com/
 ---
 
 ## 🛠️ Tech Stack
