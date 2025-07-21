@@ -42,8 +42,7 @@ Website Preview: https://h4rf3r.pythonanywhere.com/
 Screenshots:
 
 <img src="app/static/assets/Screenshot_Home.png" alt="Home Page Screenshot" width="800">
-<img src="app/static/assets/Screenshot_AddMovie.png" alt="Add Movie Modal Screenshot" width="800">
----
+<img src="app/static/assets/Screenshot_AddMovie.png" alt="Add Movie Modal Screenshot" width="800"> 
 
 ## 🛠️ Tech Stack
 
