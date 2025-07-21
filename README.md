@@ -133,7 +133,7 @@ python app/data/data_seed.py
 python run.py
 ```
 
-Open your browser at `http://127.0.0.1:5000`.
+Open your browser at `http://127.0.0.1:5003`.
 
 ---
 
